@@ -1,0 +1,174 @@
+---
+description: "JavaScript and TypeScript commenting standards and best practices"
+globs: ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"]
+---
+# JavaScript Comments Standards
+
+## File Headers
+Required format for all JavaScript/TypeScript files:
+```javascript
+/**
+ * @fileoverview [Brief file description]
+ *
+ * [Detailed explanation of the file's purpose and functionality]
+ *
+ * Functions:
+ * - [List all functions included in this file]
+ *
+ * Constants:
+ * - [List all constants if the file defines them]
+ *
+ * Flow:
+ * 1. [Step one in execution flow]
+ * 2. [Step two]
+ *
+ * Error Handling:
+ * - [Describe potential error cases and how they are managed]
+ *
+ * @module [Module path or identifier]
+ * @requires [Dependency name]
+ * @exports {Type} [Exported entity] - [Brief export description]
+ */
+```
+
+## Function Documentation
+Required format for all functions and methods:
+```javascript
+/**
+ * [Short function description]
+ *
+ * [Detailed explanation of what the function does, including edge cases]
+ *
+ * @param {Type} name - [Parameter description]
+ * @return {Type} [Return value description]
+ * @throws {ErrorType} [Description of when this error occurs]
+ * @example
+ * // Example usage of the function
+ * const result = myFunction(param);
+ */
+```
+
+## Class Documentation
+```javascript
+/**
+ * [Class description]
+ *
+ * @class
+ * @implements {Interface}
+ * @extends ParentClass
+ * @example
+ * const instance = new MyClass(config);
+ */
+```
+
+## Variable and Constant Documentation
+```javascript
+/** @const {Type} Description of the constant */
+const CONSTANT_NAME = value;
+
+/** @type {Type} Description of the variable */
+let variableName = value;
+```
+
+## Comment Categories
+
+### Single-line Comments
+- Use for brief explanations of the following line
+- Start with a space after //
+- Capitalize first word
+```javascript
+// Calculate the total amount with tax
+const total = subtotal * (1 + taxRate);
+```
+
+### Multi-line Comments
+- Use for complex explanations
+- Each line should start with *
+- Maintain consistent indentation
+```javascript
+/*
+ * This is a complex calculation that:
+ * 1. Validates the input
+ * 2. Processes the data
+ * 3. Returns the formatted result
+ */
+```
+
+### TODO Comments
+- Include issue or ticket reference if exists
+- Add author and date
+- Explain the pending work
+```javascript
+// TODO(username): [JIRA-123] Implement error handling - 2024-01-31
+```
+
+## Best Practices
+
+### Do Use Comments For
+- Complex business logic explanations
+- Algorithm implementations
+- Workarounds and their reasons
+- Browser-specific code
+- Regular expression explanations
+- Public API documentation
+- Deprecated feature warnings
+
+### Avoid Comments For
+- Obvious operations
+- Self-documenting code
+- Commented-out code
+- Version control information
+- Personal notes
+- Redundant information
+
+### Style Guidelines
+- Use proper English
+- Maintain consistent indentation
+- Keep comments up to date
+- Remove commented-out code
+- Use appropriate JSDoc tags
+- Break long comments into multiple lines
+- Align multi-line comment blocks
+
+## Documentation Tags
+Required JSDoc tags:
+```yaml
+@param:
+  required: true
+  format: "{Type} name - description"
+
+@returns:
+  required: true
+  format: "{Type} description"
+
+@throws:
+  required: when applicable
+  format: "{ErrorType} description"
+
+@example:
+  required: for public APIs
+  format: "code example"
+
+@deprecated:
+  required: when applicable
+  format: "reason and alternative"
+```
+
+## Linting Rules
+```yaml
+rules:
+  "jsdoc/require-jsdoc": error
+  "jsdoc/require-description": error
+  "jsdoc/require-param-description": error
+  "jsdoc/require-returns-description": error
+  "jsdoc/no-undefined-types": error
+  "jsdoc/check-alignment": error
+```
+
+## IDE Integration
+Configure IDE to:
+- Auto-generate comment templates
+- Enforce JSDoc validation
+- Highlight TODO comments
+- Auto-align comment blocks
+- Show documentation on hover

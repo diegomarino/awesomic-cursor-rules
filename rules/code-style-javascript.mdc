@@ -1,0 +1,61 @@
+---
+description: This is helpful for working on JavaScript and TypeScript files
+globs: ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"]
+---
+
+# Code Style Guide
+
+## Standards
+- ESLint Shopify config
+- Prettier
+
+## Import Rules
+
+### Internal Modules
+- Use @ alias for all project imports
+- Pattern: @/*
+- Avoid relative paths with multiple ../../../
+- Keep imports organized and readable
+
+Examples:
+```javascript
+// Bad
+import { helper } from '../../utils/helper'
+
+// Good
+import { helper } from '@/utils/helper'
+```
+
+## Naming Conventions
+
+### Functions
+- Use descriptive names
+- Avoid abbreviations
+- Use camelCase
+
+### Variables
+- Use camelCase
+- Be descriptive and meaningful
+
+### Constants
+- Use UPPER_SNAKE_CASE
+- Be descriptive and meaningful
+
+### Files
+- Use kebab-case
+- Be descriptive and meaningful
+
+## Comments
+
+### Avoid
+- Obvious statements
+- Redundant information
+
+### Prefer
+- Meaningful explanations
+- Complex logic clarification
+
+## Formatting
+- Use proper indentation
+- Use multi-line JSDoc comments
+- Maximum line length: 80 characters 

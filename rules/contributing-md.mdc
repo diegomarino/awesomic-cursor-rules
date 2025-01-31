@@ -1,0 +1,292 @@
+---
+description: "Contributing guidelines and standards for project collaboration"
+globs: ["**/CONTRIBUTING.md", "**/contributing.md"]
+---
+# Contributing Standards
+
+## Basic Structure
+```yaml
+required_sections:
+  - Welcome Message
+  - Code of Conduct Reference
+  - Getting Started Guide
+  - Development Workflow
+  - Pull Request Process
+  - Technical Documentation
+  - Testing Guidelines
+  - Style Guidelines
+  - Contact Information
+
+optional_sections:
+  - Project Architecture
+  - Development Environment
+  - Common Issues
+  - Performance Guidelines
+  - Security Guidelines
+  - Release Process
+  - Community Guidelines
+```
+
+## Section Guidelines
+
+### Welcome Section
+```markdown
+# Contributing to [Project Name]
+
+First off, thank you for considering contributing to [Project Name]. It's people like you that make [Project Name] such a great tool.
+
+This document provides guidelines and steps for contributing.
+```
+
+### Getting Started
+```yaml
+steps:
+  - Fork the repository
+  - Clone your fork
+  - Set up development environment
+  - Create feature branch
+  - Make changes
+  - Run tests
+  - Submit pull request
+
+environment_setup:
+  - Required tools
+  - Configuration steps
+  - Verification commands
+```
+
+### Development Workflow
+```yaml
+branching_strategy:
+  main: Production-ready code
+  develop: Integration branch
+  feature: Feature development
+  bugfix: Bug fixes
+  release: Release preparation
+
+naming_conventions:
+  features: feature/<issue-number>-brief-description
+  bugfix: fix/<issue-number>-brief-description
+  release: release/v<major>.<minor>.<patch>
+```
+
+## Technical Documentation
+
+### Architecture Overview
+```mermaid
+graph TD
+  A[Core Module] --> B[Service Layer]
+  B --> C[Data Access]
+  B --> D[External APIs]
+  E[Utils] --> A
+  E --> B
+```
+
+### Component Documentation
+```yaml
+format:
+  name: ComponentName
+  purpose: Brief description
+  dependencies: [List of dependencies]
+  api_endpoints: [List of endpoints]
+  events: [List of events]
+  configuration: [Configuration options]
+```
+
+### Detailed Workflows
+```yaml
+documentation:
+  - Component interactions
+  - Data flow diagrams
+  - State management
+  - Error handling
+  - Performance considerations
+  - Security measures
+```
+
+## Code Guidelines
+
+### Style Guide
+```yaml
+general:
+  - Follow existing code style
+  - Use consistent naming
+  - Write self-documenting code
+  - Keep functions focused
+  - Comment complex logic
+
+formatting:
+  - Use proper indentation
+  - Limit line length
+  - Group related code
+  - Use meaningful names
+  - Add whitespace for readability
+```
+
+### Testing Requirements
+```yaml
+unit_tests:
+  - Test each component
+  - Mock dependencies
+  - Cover edge cases
+  - Maintain test isolation
+  - Use meaningful assertions
+
+integration_tests:
+  - Test component interaction
+  - Verify data flow
+  - Test error handling
+  - Check performance
+  - Validate security
+```
+
+## Pull Request Process
+
+### Submission Guidelines
+```yaml
+checklist:
+  - Branch from develop
+  - Follow naming convention
+  - Update documentation
+  - Add/update tests
+  - Pass all checks
+  - Request review
+  - Address feedback
+
+pr_template:
+  sections:
+    - Description
+    - Related Issues
+    - Changes Made
+    - Testing Done
+    - Screenshots
+    - Checklist
+```
+
+### Review Process
+```yaml
+steps:
+  - Code review
+  - Test verification
+  - Documentation review
+  - Performance check
+  - Security assessment
+  - Final approval
+```
+
+## Best Practices
+
+### Code Quality
+- Write clean, maintainable code
+- Follow SOLID principles
+- Use design patterns appropriately
+- Keep functions small and focused
+- Write meaningful tests
+- Document public APIs
+- Handle errors gracefully
+
+### Documentation
+- Keep docs up to date
+- Include code examples
+- Document breaking changes
+- Add inline comments
+- Update changelog
+- Maintain architecture docs
+
+### Communication
+- Be respectful and professional
+- Provide constructive feedback
+- Ask questions when unclear
+- Respond to feedback promptly
+- Help other contributors
+- Share knowledge
+
+## Security Guidelines
+
+### Code Security
+- Follow security best practices
+- Review dependencies
+- Validate inputs
+- Sanitize outputs
+- Handle sensitive data
+- Use secure defaults
+
+### Process Security
+- No credentials in code
+- Review access rights
+- Report vulnerabilities
+- Follow security policy
+- Use secure communications
+
+## Performance Guidelines
+
+### Optimization
+```yaml
+considerations:
+  - Algorithm efficiency
+  - Resource usage
+  - Memory management
+  - Network calls
+  - Database queries
+  - Cache usage
+
+monitoring:
+  - Performance metrics
+  - Resource utilization
+  - Error rates
+  - Response times
+  - Load testing
+```
+
+## Release Process
+
+### Version Control
+```yaml
+versioning:
+  format: semantic
+  major: Breaking changes
+  minor: New features
+  patch: Bug fixes
+
+release_steps:
+  - Version bump
+  - Update changelog
+  - Run tests
+  - Build artifacts
+  - Update docs
+  - Create tag
+  - Deploy
+```
+
+## Templates
+
+### Issue Template
+```yaml
+sections:
+  - Type of Issue
+  - Current Behavior
+  - Expected Behavior
+  - Steps to Reproduce
+  - Environment Details
+  - Additional Context
+```
+
+### Pull Request Template
+```yaml
+sections:
+  - Description
+  - Related Issues
+  - Type of Change
+  - Testing Done
+  - Checklist
+  - Screenshots
+```
+
+## Community Guidelines
+- Be welcoming and inclusive
+- Follow code of conduct
+- Help new contributors
+- Share knowledge
+- Give credit
+- Stay professional
+- Maintain documentation 

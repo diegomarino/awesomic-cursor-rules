@@ -1,0 +1,131 @@
+---
+description: Environment variables configuration standards and best practices
+globs: [".env*", "*.env", "config/*.env"]
+---
+# Environment Variables Standards
+
+## File Structure
+- Use descriptive section headers
+- Include detailed comments for each variable
+- Group related variables together
+- Follow consistent naming conventions (by default use SCREAMING_SNAKE_CASE if none specified)
+- Align comments vertically within each group for better readability
+
+## Required Environment Files
+- `.env` - Main development configuration (gitignored)
+- `.env.example` - Template with dummy values (committed)
+- `.env.test` - Test environment configuration (gitignored)
+- `.env.production` - Production settings (gitignored)
+
+Optional but recommended:
+- `.env.local` - Local overrides, for developer-specific settings (gitignored)
+
+## Variable Categories
+
+### Environment Configuration
+```yaml
+NODE_ENV:
+  description: Application environment setting
+  allowed_values: [development, production, test]
+  required: true
+
+DEBUG:
+  description: Debug mode configuration
+  allowed_values: [true, false, trace, debug, info, warn, error]
+  default: false
+```
+
+### Logging Configuration
+```yaml
+LOG_ENABLED:
+  description: Enable/disable application logging
+  type: boolean
+  required: true
+
+LOG_LEVEL:
+  description: Logging verbosity level
+  allowed_values: [error, warn, info, debug, trace]
+  default: info
+
+LOG_FILE:
+  description: Main log file name
+  type: string
+  required: true
+
+LOG_PATHS:
+  description: Logging path configuration
+  type: object
+  properties:
+    LATEST: string  # Path for latest log file
+    HISTORY: string # Path pattern for historical logs
+  
+LOG_ROTATION:
+  description: Log rotation settings
+  type: object
+  properties:
+    MAX_SIZE: string # Size threshold for rotation
+    MAX_FILES: string # Retention period
+```
+
+### Locale Settings
+```yaml
+TIMEZONE:
+  description: Application timezone
+  type: string
+  required: true
+  example: UTC
+
+LANGUAGE:
+  description: Default application locale
+  type: string
+  pattern: [a-z]{2}-[A-Z]{2}
+  required: true
+  example: en-US
+```
+
+### Directory Configuration
+```yaml
+DIRECTORIES:
+  description: Application directory structure
+  type: object
+  note: "Paths should be relative to project root"
+  properties:
+    OUTPUT: string    # Output directory
+    TEMPLATES: string # Templates directory
+    STATIC: string    # Static assets directory
+    DATA: string      # Data files directory
+    LOGS: string      # Logs directory
+```
+
+## Best Practices
+- Never commit sensitive values
+- Use strong, unique values in production
+- Regularly rotate sensitive values
+- Document all environment variables
+- Validate environment variables on startup
+- Use appropriate data types
+- Include validation rules
+- Align comments vertically within groups for better readability
+Example:
+```bash
+# Database Configuration
+DB_HOST=localhost     # Database server hostname
+DB_PORT=5432          # Database server port
+DB_NAME=myapp         # Name of the database
+DB_USER=admin         # Database user account
+DB_PASSWORD=secret    # Database user password
+```
+
+## Validation Rules
+- All paths must be relative
+- Timeouts must be positive integers
+- Ports must be between 1024-65535
+- URLs must include protocol
+- Credentials must never be empty
+
+## Security Guidelines
+- Encrypt sensitive values in transit
+- Use separate credentials per environment
+- Implement access control for env files
+- Regular security audits of env values
+- Monitor for exposed credentials

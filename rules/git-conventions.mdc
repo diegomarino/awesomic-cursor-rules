@@ -1,0 +1,242 @@
+---
+description: "Git workflow and hook conventions for maintaining code quality"
+globs: [".git/hooks/*", ".githooks/*", "scripts/git-hooks/*"]
+---
+
+# Git Hooks Standards
+
+## Hook Types and Purposes
+
+### Client-Side Hooks
+```yaml
+pre-commit:
+  description: Runs before git commit to ensure code quality
+  triggers: Before commit creation
+  blocking: true
+  common_uses:
+    - Linting
+    - Code formatting
+    - Unit tests
+    - Type checking
+    - Style enforcement
+
+prepare-commit-msg:
+  description: Modifies default commit message
+  triggers: After commit message creation, before editor
+  blocking: false
+  common_uses:
+    - Add branch name
+    - Insert ticket number
+    - Template enforcement
+
+commit-msg:
+  description: Validates commit message format
+  triggers: After commit message creation
+  blocking: true
+  common_uses:
+    - Conventional commits check
+    - Ticket reference validation
+    - Length restrictions
+
+post-commit:
+  description: Runs after commit is completed
+  triggers: After commit creation
+  blocking: false
+  common_uses:
+    - Notifications
+    - Documentation updates
+    - Stats collection
+
+pre-push:
+  description: Runs before pushing commits
+  triggers: Before push operation
+  blocking: true
+  common_uses:
+    - Integration tests
+    - Build verification
+    - Security checks
+```
+
+### Server-Side Hooks
+```yaml
+pre-receive:
+  description: First server hook when receiving push
+  triggers: Before refs are updated
+  blocking: true
+  common_uses:
+    - Access control
+    - Policy enforcement
+
+update:
+  description: Like pre-receive but per branch
+  triggers: Before each ref update
+  blocking: true
+  common_uses:
+    - Branch-specific rules
+    - Protected branch logic
+
+post-receive:
+  description: After entire push process completes
+  triggers: After successful push
+  blocking: false
+  common_uses:
+    - Notifications
+    - CI/CD triggers
+    - Deployment automation
+```
+
+## Hook Implementation Guidelines
+
+### Script Structure
+```bash
+#!/bin/sh
+# Hook: [hook-name]
+# Purpose: [brief description]
+# Blocking: [yes/no]
+
+# 1. Environment Setup
+# Set any required environment variables
+export CUSTOM_VAR="value"
+
+# 2. Configuration
+MAX_FILE_SIZE="10MB"
+RESTRICTED_PATHS="config/*, secrets/*"
+
+# 3. Validation Functions
+validate_file_size() {
+    # Implementation
+}
+
+check_restricted_paths() {
+    # Implementation
+}
+
+# 4. Main Logic
+main() {
+    # Core functionality
+}
+
+# 5. Execute
+main "$@"
+```
+
+### Best Practices
+
+#### General Guidelines
+- Make hooks executable (`chmod +x`)
+- Include clear error messages
+- Provide bypass mechanism for emergencies
+- Document all configuration options
+- Keep hooks focused and modular
+- Include logging for debugging
+
+#### Performance Considerations
+- Run expensive operations last
+- Use incremental checks when possible
+- Cache results where appropriate
+- Parallelize independent checks
+- Skip unnecessary operations
+
+#### Error Handling
+- Use appropriate exit codes
+- Provide clear error messages
+- Include resolution steps
+- Log failures for debugging
+- Handle edge cases gracefully
+
+## Common Configurations
+
+### Pre-commit Checks
+```yaml
+code_quality:
+  - lint_check
+  - type_check
+  - unit_tests
+  - format_check
+
+security:
+  - secrets_scan
+  - dependency_check
+  - license_check
+
+performance:
+  - bundle_size
+  - image_optimization
+  - dead_code_check
+```
+
+### Commit Message Format
+```yaml
+format:
+  pattern: "^(feat|fix|docs|style|refactor|test|chore)(\\(.+\\))?: .{1,50}"
+  example: "feat(auth): add OAuth2 support"
+
+components:
+  type:
+    required: true
+    allowed: [feat, fix, docs, style, refactor, test, chore]
+  
+  scope:
+    required: false
+    format: "([a-z-]+)"
+  
+  description:
+    required: true
+    max_length: 50
+    capitalize: true
+    end_period: false
+
+body:
+  required: false
+  wrap_length: 72
+  separate_title: true
+```
+
+## Installation and Setup
+
+### Local Setup
+```bash
+# 1. Create hooks directory
+mkdir -p .githooks
+
+# 2. Configure git to use custom hooks directory
+git config core.hooksPath .githooks
+
+# 3. Make hooks executable
+chmod +x .githooks/*
+```
+
+### Team Setup
+```yaml
+steps:
+  - Include hooks in repository
+  - Document installation process
+  - Provide setup script
+  - Configure CI to validate hooks
+  - Add bypass documentation
+```
+
+## Troubleshooting
+
+### Common Issues
+```yaml
+hook_not_executing:
+  - Check file permissions
+  - Verify hooks path configuration
+  - Ensure correct naming
+  - Check shebang line
+
+hook_failing:
+  - Check error messages
+  - Verify tool installations
+  - Review configuration
+  - Check log files
+```
+
+## Security Considerations
+- Validate hook sources
+- Review third-party hooks
+- Protect hook bypass mechanisms
+- Secure sensitive configurations
+- Audit hook changes
+- Monitor hook execution 

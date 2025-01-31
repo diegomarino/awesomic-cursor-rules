@@ -1,0 +1,47 @@
+---
+description: This is helpful for writing and maintaining tests
+globs: ["tests/**/*.test.js", "tests/**/*.test.ts", "tests/**/*.test.tsx"]
+---
+
+# Testing Standards
+
+## Coverage Requirements
+
+Minimum coverage requirements:
+- Statements: 80%
+- Branches: 75%
+- Functions: 80%
+- Lines: 80%
+
+Excluded paths:
+- src/types/**
+- **/*.d.ts
+
+## Test Types
+
+### Unit Tests
+- Pattern: **/*.unit.test.js
+- Location: tests/unit
+- Naming: <feature>.unit.test.js
+
+### Integration Tests
+- Pattern: **/*.integration.test.js
+- Location: tests/integration
+- Naming: <feature>.integration.test.js
+
+### E2E Tests
+- Pattern: **/*.e2e.test.js
+- Location: tests/e2e
+- Naming: <feature>.e2e.test.js
+
+## Conventions
+
+### Structure
+- Group related tests in describe blocks
+- Use clear test descriptions
+- Follow AAA pattern (Arrange-Act-Assert)
+
+### Naming
+- Test descriptions should be explicit
+- Use 'should' in test descriptions
+- Describe expected behavior 

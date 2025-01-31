@@ -1,0 +1,42 @@
+---
+description: "Security standards and best practices"
+globs: ["**/*"]
+---
+
+# Security Standards
+
+## Secret Management
+- Never commit secrets to repository
+- Use environment variables for secrets
+- Encrypt sensitive data
+- Include .env in .gitignore
+- Implement secrets rotation policy
+- Document access control
+
+## Dependency Management
+- Regular security audits
+- Automated vulnerability scanning
+- License compliance checks
+
+### Tools
+- npm audit
+- snyk
+- dependabot
+
+## Required Practices
+- Input validation
+- Output encoding
+- Authentication checks
+- Authorization controls
+- CSRF protection
+- XSS prevention
+
+## Security Reviews
+- Security-focused code reviews
+- Regular security assessments
+- Penetration testing
+
+## Scanning
+- Static code analysis
+- Dynamic security testing
+- Dependency scanning 
