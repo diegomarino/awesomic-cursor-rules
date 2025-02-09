@@ -1,0 +1,177 @@
+---
+description: Creating and editing log messages
+globs: *.js*, *.log*
+---
+# Logging Guidelines for the Application
+
+## 1. Log Format Structure
+- **Rule:** All logs must follow a consistent format with clear section separation
+- **Format:** `timestamp ┃ [LEVEL] ┃ [filename] ┃ [context] ┃ message ┃ key1=value1 • key2=value2`
+- **Example:**
+```log
+2025-02-08T21:32:48.101Z ┃ [INFO] ┃ [process-csv.js] ┃ [data] ┃ Processing started ┃ file=input.csv • rows=100 • type=user-data
+```
+
+## 2. Log Levels Usage
+- **ERROR:** Critical issues requiring immediate attention
+  ```log
+  [ERROR] ┃ [database.js] ┃ [db] ┃ Connection failed ┃ error=timeout • retries=3
+  ```
+- **WARN:** Unexpected conditions that don't stop execution
+  ```log
+  [WARN] ┃ [auth.js] ┃ [security] ┃ Too many login attempts ┃ user=john • attempts=5
+  ```
+- **INFO:** Important operational events (use sparingly)
+  ```log
+  [INFO] ┃ [server.js] ┃ [system] ┃ Server started ┃ port=3000 • mode=production
+  ```
+- **DEBUG:** Detailed information for development
+  ```log
+  [DEBUG] ┃ [processor.js] ┃ [task] ┃ Processing batch ┃ batch=5 • items=20
+  ```
+
+## 3. Context and Metadata
+- **Rule:** Use appropriate context labels and structured metadata
+- **Contexts:** 
+  - `[api]` - API interactions, requests, responses
+  - `[audit]` - Audit trail, compliance events
+  - `[auth]` - Authentication specific events
+  - `[cache]` - Cache operations, hits, misses, invalidations
+  - `[cleanup]` - Cleanup operations, maintenance
+  - `[config]` - Configuration changes, env vars
+  - `[data]` - Data processing, transformations, validations
+  - `[db]` - Database operations, queries, migrations
+  - `[email]` - Email sending, templates, delivery
+  - `[error]` - Error handling, exceptions
+  - `[export]` - Export operations, data dumps
+  - `[file]` - File system operations, I/O activities
+  - `[format]` - Data formatting, transformations
+  - `[health]` - Health checks, system status
+  - `[import]` - Import operations, data loading
+  - `[metrics]` - Application metrics, stats
+  - `[migration]` - Data migrations, schema updates
+  - `[network]` - Network operations, connections, DNS
+  - `[perf]` - Performance metrics, timings, resource usage
+  - `[queue]` - Message queue operations, pub/sub
+  - `[security]` - Authentication, authorization, security events
+  - `[session]` - Session management, user sessions
+  - `[storage]` - Storage operations (S3, blob storage)
+  - `[sync]` - Synchronization operations
+  - `[system]` - System operations, startup, shutdown, config changes
+  - `[task]` - Background tasks, scheduled jobs, workers
+  - `[template]` - Template processing, rendering
+  - `[test]` - Test execution, test data setup
+  - `[ui]` - User interface events, rendering
+  - `user` - User-specific actions and events
+  - `user-pref` - User preferences and settings
+  - `user-profile` - User profile operations
+  - `user-activity` - User activity tracking
+  - `user-content` - User-generated content
+  - `[validation]` - Input validation, schema checks
+
+- **Context Usage Examples:**
+  ```log
+  [cache] ┃ Cache miss for user profile ┃ key=user:123 • ttl=3600
+  [file] ┃ Template file loaded ┃ path=templates/invoice.md • size=25KB
+  [network] ┃ API endpoint unreachable ┃ url=api.example.com • timeout=5s
+  [queue] ┃ Message published ┃ topic=notifications • size=1.2KB
+  [audit] ┃ User settings modified ┃ user=john • changes={"theme":"dark"}
+  [health] ┃ Database connection healthy ┃ latency=5ms • connections=25
+  [metrics] ┃ API response times ┃ p95=120ms • p99=350ms • requests=1000
+  [template] ┃ Contract rendered ┃ template=invoice • vars=15 • time=230ms
+  [sync] ┃ User data synchronized ┃ records=150 • duration=2.5s
+  ```
+
+- **Metadata:**
+  - Use key=value format
+  - Separate multiple values with bullets (•)
+  - Keep keys short but descriptive
+  - Group related metadata together (if needed)
+
+## 4. Message Content Guidelines
+- **Rule:** Messages should be clear, concise, and action-oriented
+- **Good Examples:**
+  ```log
+  "User authentication successful" ┃ user=john • method=oauth
+  "Database backup completed" ┃ size=1.2GB • duration=45s
+  "API rate limit exceeded" ┃ endpoint=/users • limit=100
+  ```
+- **Bad Examples:**
+  ```log
+  "Done" ✗
+  "Error occurred while processing" ✗
+  "Successfully completed the backup process of the database" ✗
+  ```
+
+## 5. Error Logging
+- **Rule:** Error logs must include sufficient context for debugging
+- **Required Fields:**
+  - Error message
+  - Error code (if available)
+  - Stack trace (for DEBUG level)
+  - Related identifiers (user, session, request)
+- **Example:**
+  ```log
+  [ERROR] ┃ [payment.js] ┃ [transaction] ┃ Payment failed ┃ txId=abc123 • error={"code":"PAY_001","message":"Insufficient funds"} • user=john
+  ```
+
+## 6. Performance Logging
+- **Rule:** Include timing and resource usage information
+- **Required Fields:**
+  - Duration
+  - Resource metrics (memory, CPU)
+  - Batch/transaction sizes
+- **Example:**
+  ```log
+  [INFO] ┃ [processor.js] ┃ [perf] ┃ Batch processed ┃ duration=1.2s • memory=256MB • items=1000
+  ```
+
+## 7. Sensitive Data Handling
+- **Rule:** Never log sensitive information
+- **Sensitive Data Types:**
+  - Passwords
+  - API keys
+  - Personal data (SSN, credit cards)
+  - Authentication tokens
+- **Example:**
+  ```log
+  [INFO] ┃ [auth.js] ┃ [security] ┃ API key rotated ┃ keyId=key_123 • expiresIn=7d
+  ```
+
+## 8. Batch Operations
+- **Rule:** Log start/end of batch operations with progress
+- **Required Fields:**
+  - Total items
+  - Success/failure counts
+  - Duration
+- **Example:**
+  ```log
+  [INFO] ┃ [import.js] ┃ [task] ┃ Import completed ┃ total=1000 • success=990 • failed=10 • duration=5m
+  ```
+
+## 9. Filtering and Analysis
+- **Rule:** Design logs for easy filtering and analysis
+- **Guidelines:**
+  - Use ┃ for main sections
+  - Use • for metadata
+  - Keep consistent field names
+  - Use structured data formats
+
+## 10. Log Rotation and Cleanup
+- **Rule:** Configure appropriate log rotation policies
+- **Settings:**
+  - Max file size: 10MB
+  - Retention period: 7 days
+  - Compression: enabled
+  - Naming: `YYYY-MM-DD.log`
+
+## 11. Development vs Production
+- **Rule:** Adjust logging based on environment
+- **Development:**
+  - DEBUG level enabled
+  - Full stack traces
+  - Detailed timing info
+- **Production:**
+  - INFO level and above
+  - Limited stack traces
+  - Performance impact monitoring
