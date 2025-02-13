@@ -2,33 +2,241 @@
 description: Creating and editing log messages
 globs: *.js*, *.log*
 ---
+
 # Logging Guidelines for the Application
 
 ## 1. Log Format Structure
 - **Rule:** All logs must follow a consistent format with clear section separation
-- **Format:** `timestamp ┃ [LEVEL] ┃ [filename] ┃ [context] ┃ message ┃ key1=value1 • key2=value2`
+- **Format:** `timestamp ┃ [LEVEL] ┃ [context] ┃ [filename] ┃ message ┃ key1=value1 • key2=value2`
 - **Example:**
 ```log
-2025-02-08T21:32:48.101Z ┃ [INFO] ┃ [process-csv.js] ┃ [data] ┃ Processing started ┃ file=input.csv • rows=100 • type=user-data
+2025-02-08T21:32:48.101Z ┃ [INFO] ┃ [data] ┃ [process-csv.js] ┃ Processing started ┃ file=input.csv • rows=100 • type=user-data
 ```
 
 ## 2. Log Levels Usage
-- **ERROR:** Critical issues requiring immediate attention
+
+### ERROR 
+Critical issues requiring immediate attention
   ```log
   [ERROR] ┃ [database.js] ┃ [db] ┃ Connection failed ┃ error=timeout • retries=3
   ```
-- **WARN:** Unexpected conditions that don't stop execution
+
+ - **Purpose:** Critical issues requiring immediate attention
+ - **When to Use:**
+   - System crashes
+   - Data corruption
+   - Security breaches
+   - Unrecoverable states
+   - Business critical failures
+
+ 
+```typescript
+logger.error(message, {
+  filename: string     // Required: filename where this log is triggered
+  context: string,      // Required: Error context (e.g., 'db', 'auth')
+  error: {             // Required: Error details
+    code: string,      // Error classification code
+    message: string,   // Error description
+    stack?: string,    // Stack trace
+    type?: string      // Error type/category
+  },
+  impact: string,      // Required: Business impact description
+  recovery?: string[], // Recommended: Recovery steps
+  data?: object,       // Optional: Related data (non-sensitive)
+  metrics?: {          // Optional: Performance metrics
+    duration?: number,
+    attempts?: number
+  }
+});
+```
+
+```javascript
+logger.error('Database connection failed', {
+  filename: 'database_connection.js',
+  context: 'db',
+  error: {
+    code: 'DB_CONN_001',
+    message: error.message,
+    stack: error.stack,
+    type: 'ConnectionError'
+  },
+  impact: 'System unable to process transactions',
+  recovery: [
+    'Check database credentials',
+    'Verify network connectivity'
+  ],
+  metrics: {
+    duration: 1500,
+    attempts: 3
+  }
+});
+```  
+  
+### WARN
+Unexpected conditions that don't stop execution
   ```log
   [WARN] ┃ [auth.js] ┃ [security] ┃ Too many login attempts ┃ user=john • attempts=5
   ```
-- **INFO:** Important operational events (use sparingly)
+- **Purpose:** Unexpected conditions requiring attention
+- **When to Use:**
+  - Resource thresholds exceeded
+  - Deprecated feature usage
+  - Retry attempts
+  - Performance degradation
+  - Security concerns
+
+```typescript
+logger.warn(message, {
+  filename: string     // Required: filename where this log is triggered
+  context: string,     // Required: Warning context
+  warning: {          // Required: Warning details
+    type: string,     // Warning classification
+    details: object   // Specific warning information
+  },
+  impact: string,     // Required: Potential impact
+  action: string[],   // Recommended: Suggested actions
+  metrics?: {         // Optional: Related metrics
+    threshold?: number,
+    current?: number,
+    trend?: string
+  }
+});
+```
+
+**Example:**
+```javascript
+logger.warn('High memory usage detected', {
+  filename: 'index.js',
+  context: 'perf',
+  warning: {
+    type: 'ResourceThreshold',
+    details: {
+      resource: 'memory',
+      limit: '2GB',
+      current: '1.8GB'
+    }
+  },
+  impact: 'Possible performance degradation',
+  action: [
+    'Scale up resources',
+    'Review memory leaks'
+  ],
+  metrics: {
+    threshold: 2048,
+    current: 1843,
+    trend: 'increasing'
+  }
+});
+```
+
+### INFO
+Important operational events (use sparingly)
   ```log
   [INFO] ┃ [server.js] ┃ [system] ┃ Server started ┃ port=3000 • mode=production
   ```
-- **DEBUG:** Detailed information for development
+- **Purpose:** Important business events and state changes
+- **When to Use:**
+  - Business operations completion
+  - System state changes
+  - User actions
+  - Integration events
+
+```typescript
+logger.info(message, {
+  filename: string     // Required: filename where this log is triggered
+  context: string,     // Required: Event context
+  operation: {        // Required: Operation details
+    name: string,     // Operation identifier
+    status: string,   // Operation status
+    result?: any      // Operation result
+  },
+  metrics?: {         // Optional: Performance metrics
+    duration?: number,
+    size?: number
+  },
+  data?: object      // Optional: Additional context
+});
+```
+
+**Example:**
+```javascript
+logger.info('User registration completed', {
+  filename: 'user.js',
+  context: 'user',
+  operation: {
+    name: 'user_registration',
+    status: 'success',
+    result: {
+      userId: 'usr_123',
+      verificationSent: true
+    }
+  },
+  metrics: {
+    duration: 234,
+    size: 1024
+  },
+  data: {
+    source: 'web',
+    plan: 'premium'
+  }
+});
+```
+
+
+### DEBUG
+Detailed information for development
   ```log
   [DEBUG] ┃ [processor.js] ┃ [task] ┃ Processing batch ┃ batch=5 • items=20
   ```
+
+### DEBUG Level
+- **Purpose:** Technical information for development
+- **When to Use:**
+  - Method entry/exit
+  - Variable states
+  - Technical decisions
+  - Process steps
+
+```typescript
+logger.debug(message, {
+  filename: string     // Required: filename where this log is triggered
+  context: string,      // Required: Technical context
+  technical: {         // Required: Technical details
+    function?: string, // Function/method name
+    state?: object,   // Current state
+    args?: object     // Function arguments
+  },
+  trace?: {           // Optional: Execution trace
+    step: number,
+    total: number
+  },
+  data?: object       // Optional: Additional debug data
+});
+```
+
+**Example:**
+```javascript
+logger.debug('Processing user preferences', {
+  filename: 'user.js',
+  context: 'user-pref',
+  technical: {
+    function: 'processPreferences',
+    state: {
+      cacheHit: false,
+      validationPassed: true
+    },
+    args: {
+      userId: 'usr_123',
+      preferences: ['theme', 'language']
+    }
+  },
+  trace: {
+    step: 2,
+    total: 5
+  }
+});
+```
+
 
 ## 3. Context and Metadata
 - **Rule:** Use appropriate context labels and structured metadata
@@ -47,6 +255,7 @@ globs: *.js*, *.log*
   - `[file]` - File system operations, I/O activities
   - `[format]` - Data formatting, transformations
   - `[health]` - Health checks, system status
+  - `[helper]` - Custom helpers operations
   - `[import]` - Import operations, data loading
   - `[metrics]` - Application metrics, stats
   - `[migration]` - Data migrations, schema updates
@@ -97,23 +306,32 @@ globs: *.js*, *.log*
   "API rate limit exceeded" ┃ endpoint=/users • limit=100
   ```
 - **Bad Examples:**
-  ```log
-  "Done" ✗
-  "Error occurred while processing" ✗
-  "Successfully completed the backup process of the database" ✗
-  ```
+```javascript
+"Done"                    // Too vague
+"Error occurred"          // Not specific
+"Process completed ok"    // Not informative
+"Successfully completed the backup process of the database" // Too verbose
+```
 
 ## 5. Error Logging
+- **Purpose:** Critical issues requiring immediate attention
+- **When to Use:**
+  - System crashes
+  - Data corruption
+  - Security breaches
+  - Unrecoverable states
+  - Business critical failures
 - **Rule:** Error logs must include sufficient context for debugging
 - **Required Fields:**
   - Error message
   - Error code (if available)
   - Stack trace (for DEBUG level)
   - Related identifiers (user, session, request)
-- **Example:**
+- **Examples:**
   ```log
   [ERROR] ┃ [payment.js] ┃ [transaction] ┃ Payment failed ┃ txId=abc123 • error={"code":"PAY_001","message":"Insufficient funds"} • user=john
   ```
+
 
 ## 6. Performance Logging
 - **Rule:** Include timing and resource usage information
