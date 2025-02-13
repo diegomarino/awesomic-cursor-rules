@@ -1,0 +1,97 @@
+---
+description: Review the files with changes before commiting them
+globs: *.*
+---
+# Things to review before a commit
+
+You should check all the files before commiting them in order to verify different aspects.
+
+## Linting
+
+- You should check and fix all the linting errors that the staged files have
+- Pay special attention to:
+  - Proper indentation
+  - Line length (max 80 characters)
+  - No unused imports or variables
+  - No console.log statements in production code
+
+## Comments
+
+- You should check (using the format and rules from @comments-javascript.mdc):
+  - All the comments are updated to display the exact name of imported modules, used params and exported results
+  - There is no comment in any other language than English
+  - JSDoc headers are complete for new/modified files
+  - Function documentation includes examples and error cases
+  - Error handling sections are up to date
+
+## Logging
+
+- Review all logger calls (using the format and rules from @logging.mdc):
+  - Each log has a clear and meaningful message
+  - Context is always specified and valid (check @logging.mdc for valid contexts)
+  - Filename is included in all logs
+  - Metadata follows the format: `key1=value1 • key2=value2`
+  - Metadata fits in one line (except for error details)
+  - Log levels are used appropriately:
+    - ERROR: Only for critical issues requiring immediate attention
+    - WARN: For unexpected but handled conditions
+    - INFO: For important operational events (use sparingly)
+    - DEBUG: For detailed development information
+  - No sensitive data in logs (passwords, tokens, etc)
+  - Complex objects are properly formatted in metadata
+  - Error logs include proper error context and details
+
+## Tests
+
+- You should check:
+  - All the files to be commited have enough unit tests (if they are needed). We don't aim to have 100% test coverage, but we do aim to have enough coverage to be comfortable making changes
+  - Tests include edge cases and error scenarios
+  - Test descriptions are clear and meaningful
+  - Mocks are properly implemented (especially for file system operations)
+  - All tests pass before committing
+
+## Documentation
+
+- If any of these changes affects something that should be covered in the documentation (typically a README.md file at the root folder), please edit the documentation accordingly
+- Check if you need to update:
+  - API documentation
+  - Error handling documentation
+  - Usage examples
+  - Configuration options
+
+## Error Handling
+
+- Verify that all error cases are properly handled:
+  - Use AppError consistently
+  - Include meaningful error messages
+  - Add proper context information
+  - Don't expose sensitive information in errors
+  - Clean up resources in error cases
+
+## Security
+
+- Review for security concerns:
+  - No sensitive data in logs or error messages
+  - Safe file system operations
+  - Proper input validation
+  - No hardcoded credentials
+  - No temporary debugging code
+
+## Git Commit
+
+- Please make a proposal for the commit that:
+  - Has a clear and concise message
+  - Follows conventional commits format (feat/fix/docs/etc)
+  - Contains only related changes
+  - Doesn't include temporary or debugging files
+  - References related issues if applicable
+
+## Emergency Commits
+
+If you need to skip some of these checks in an emergency:
+1. Get team lead approval
+2. Document the reason in the commit message
+3. Create follow-up tasks for skipped items
+4. Use `git commit --no-verify` only as a last resort
+
+
